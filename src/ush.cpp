@@ -66,7 +66,6 @@ int main(int argc, char** argv) {
     } //end array fill loop
         
     //Forking off to run program
-    pid_t parent = getpid();
     pid_t pid = fork();
     if(pid > 0) { //Parent runs this
       int statusnum;
