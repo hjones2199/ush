@@ -14,7 +14,6 @@
 #include <string>
 #include <vector>
 #include <fstream>
-#include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <wait.h>
@@ -72,7 +71,7 @@ int main(int argc, char** argv) {
     }
   } //end of main loop
   return 0;
-}
+} //End main
 
 void printPrompt() {
   /**
@@ -111,9 +110,13 @@ vector<string> findCommand() {
    * Working directory (if program starts with ./), $PATH variable, and missing files
    * are all taken into account
    */
+   //Initializers
   string userInput = getLineRead();;
   vector<string> tokenized{};
+  vector<string> path;
   auto wordStart{0};
+
+  //Tokenize the line into a vector of args
   for(unsigned i = 0; i < userInput.length(); i++) {
     if(userInput.at(i) == ' ') {
       tokenized.push_back(userInput.substr(wordStart,i));
@@ -121,8 +124,8 @@ vector<string> findCommand() {
     }
   }
   tokenized.push_back(userInput.substr(wordStart,userInput.length()));
-  vector<string> path;
-  //HERE
+
+  //Check for builtin commands, should probably be refactored out later
   if(tokenized.at(0) == "exit") //Exit command input by user
     exit(0);
   if((tokenized.at(0).substr(0,2) == "./") && (fileExists(tokenized.at(0)))) //Command is selected from current dir
@@ -132,6 +135,8 @@ vector<string> findCommand() {
       throw "Error: file not found";
     return tokenized;
   }
+
+  //Search the path for the command and retrieve its full path
   setPath(path);
   for(string x : path) { //Iterate through the path looking for matching files
     if(fileExists(x + "/" + tokenized.at(0))) {
@@ -140,7 +145,7 @@ vector<string> findCommand() {
     }
   }
   throw "Error: File not found"; //No matches found
-}
+} //End findCommand
 
 bool fileExists(string filename) {
   /**
