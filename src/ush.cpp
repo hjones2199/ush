@@ -44,18 +44,20 @@ int main(int argc, char** argv) {
   while(1) { //Main loop begin
     //Initializer Area
     string current{}; //holds the string just recieved from user input
-    vector<string> tokenized = findCommand();
+    vector<string> tokenized;
     char* userArgs[100] = {NULL}; //array contains the 'argv' of the program to be run
 
     //Search $PATH for a program matching users selection
     try{
-      for(unsigned int i = 0; i < tokenized.size() && i < 100; i++) {
-        userArgs[i] = (char*)tokenized.at(i).c_str();
-      }
+      tokenized = findCommand();
     }
     catch(const char* msg) {
       cerr << msg << endl;
       continue; //so that the user is able to continue using the command line after a bad input.
+    }
+    
+    for(unsigned int i = 0; i < tokenized.size() && i < 100; i++) {
+      userArgs[i] = (char*)tokenized.at(i).c_str();
     }
 
     //Forking off to run program
