@@ -19,12 +19,15 @@
 #include <unistd.h>
 #include <wait.h>
 
+//BSD Libedit
+#include <editline/readline.h>
+
 using namespace std;
 
 string userPrompt = "ush-> "; //command line prompt, PS1 to use unix terms
 void printPrompt();
 void setPath(vector<string>& answer);
-string findCommand();
+vector<string> findCommand();
 bool fileExists(string filename);
 
 
@@ -41,30 +44,20 @@ int main(int argc, char** argv) {
   while(1) { //Main loop begin
     //Initializer Area
     string current{}; //holds the string just recieved from user input
+    vector<string> tokenized = findCommand();
     char* userArgs[100] = {NULL}; //array contains the 'argv' of the program to be run
-    printPrompt();
-    
+
     //Search $PATH for a program matching users selection
     try{
-      userArgs[0] = (char* const)findCommand().c_str();
+      for(unsigned int i = 0; i < tokenized.size() && i < 100; i++) {
+        userArgs[i] = (char*)tokenized.at(i).c_str();
+      }
     }
     catch(const char* msg) {
       cerr << msg << endl;
       continue; //so that the user is able to continue using the command line after a bad input.
     }
 
-    //Fill the array of args from user input
-    for(int i = 1;;i++) {
-      if(cin.peek() == '\n') {
-        cin.get();
-        break;
-      }
-      cin >> current;
-      userArgs[i] = new char[current.size()+1];
-      current.copy(userArgs[i],current.size(),0);
-      userArgs[i][current.size()] ='\0';
-    } //end array fill loop
-        
     //Forking off to run program
     pid_t pid = fork();
     if(pid > 0) { //Parent runs this
@@ -81,7 +74,7 @@ int main(int argc, char** argv) {
 
 void printPrompt() {
   /**
-   * Simply prints the command line prompt to console, could have 
+   * Simply prints the command line prompt to console, could have
    * just used a variable, but left open for possible setPrompt
    */
   cout << userPrompt;
@@ -99,29 +92,50 @@ void setPath(vector<string>& answer) {
   }
 }
 
-string findCommand() {
+string getLineRead() {
+  //Uses editline lib
+  static char *linebuff = (char *)NULL;
+  if(linebuff) {
+    free(linebuff);
+    linebuff = (char*) NULL;
+  }
+  linebuff = readline(userPrompt.c_str());
+  return string{linebuff};
+}
+
+vector<string> findCommand() {
   /**
    * Takes users command input, and finds the appropriate executable file to run.
    * Working directory (if program starts with ./), $PATH variable, and missing files
    * are all taken into account
    */
-  string command{}; //Stores the command from user input (for example gcc)
+  string userInput = getLineRead();;
+  vector<string> tokenized{};
+  auto wordStart{0};
+  for(unsigned i = 0; i < userInput.length(); i++) {
+    if(userInput.at(i) == ' ') {
+      tokenized.push_back(userInput.substr(wordStart,i));
+      wordStart = i+1;
+    }
+  }
+  tokenized.push_back(userInput.substr(wordStart,userInput.length()));
   vector<string> path;
-  cin >> command;
-  if(command == "exit") //Exit command input by user
+  //HERE
+  if(tokenized.at(0) == "exit") //Exit command input by user
     exit(0);
-  if((command.substr(0,2) == "./") && (fileExists(command))) //Command is selected from current dir
-    return command;
-  if(command == "cd") { //has to be implemented in shell, no external commands for it.
-    cin >> command;
-    if(chdir(command.c_str()))
+  if((tokenized.at(0).substr(0,2) == "./") && (fileExists(tokenized.at(0)))) //Command is selected from current dir
+    return tokenized;
+  if(tokenized.at(0) == "cd") { //has to be implemented in shell, no external commands for it.
+    if(chdir(tokenized.at(1).c_str()))
       throw "Error: file not found";
-    return string{"cd"};
+    return tokenized;
   }
   setPath(path);
   for(string x : path) { //Iterate through the path looking for matching files
-    if(fileExists(x + "/" + command))
-       return x + "/" + command;
+    if(fileExists(x + "/" + tokenized.at(0))) {
+      tokenized.at(0) = x + "/" + tokenized.at(0);
+      return tokenized;
+    }
   }
   throw "Error: File not found"; //No matches found
 }
