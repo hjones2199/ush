@@ -114,12 +114,12 @@ vector<string> findCommand() {
   string userInput = getLineRead();;
   vector<string> tokenized{};
   vector<string> path;
-  auto wordStart{0};
+  unsigned int wordStart{0};
 
   //Tokenize the line into a vector of args
-  for(unsigned i = 0; i < userInput.length(); i++) {
+  for(unsigned int i = 0; i < userInput.length(); i++) {
     if(userInput.at(i) == ' ') {
-      tokenized.push_back(userInput.substr(wordStart,i));
+      tokenized.push_back(userInput.substr(wordStart,i-wordStart));
       wordStart = i+1;
     }
   }
