@@ -3,7 +3,7 @@ Ush is a lightweight command line shell utility for unix, the entire
 program is contained in a single source file. It acts as a minimalistic alternative
 to shells like bash, zsh, sh and so on.
 
-Program depends on the libedit's **readline()** functionality. This is its only external dependency at this
+Program depends on the libedit's *readline()* functionality. This is its only external dependency at this
 point in time.
 
 To compile and run this code on a Unix system will require that a c++11 compliant compiler is present on the system.
