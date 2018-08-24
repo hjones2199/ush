@@ -16,10 +16,15 @@
 #include <fstream>
 #include <stdlib.h>
 #include <unistd.h>
-#include <wait.h>
+#include <sys/wait.h>
 
 //BSD Libedit
+#if defined __FreeBSD__ || defined __NetBSD__ || defined __OpenBSD__
+#include <editline.h>
+#endif
+#if defined __Linux__
 #include <editline/readline.h>
+#endif
 
 using namespace std;
 
