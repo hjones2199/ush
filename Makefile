@@ -1,4 +1,4 @@
-CXX=g++
+CXX=c++
 SRC=$(wildcard src/*.cpp)
 IDIR=include
 EXENAME=bin/ush
