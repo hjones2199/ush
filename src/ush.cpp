@@ -18,11 +18,11 @@
 #include <unistd.h>
 
 //BSD Libedit
+#include <editline/readline.h>
+//Different paths on BSD and Linux
 #if defined __FreeBSD__ || defined __NetBSD__ || defined __OpenBSD__
-#include <editline.h>
 #include <sys/wait.h>
 #else
-#include <editline/readline.h>
 #include <wait.h>
 #endif
 

@@ -7,9 +7,8 @@ Program depends on the libedit's *readline()* functionality. This is its only ex
 point in time.
 
 To compile and run this code on a Unix system will require that a c++11 compliant compiler is present on the system.
-On newer linux installs simply typing **"g++ ush.cpp -o ush -ledit"** will be sufficient to compile the code. On older systems
-that still are compliant with C++11, there are two possible ways to compile the code, which one works will depend on just
-how dated the server/pc is. The first is **"g++ -std=c++11 ush.cpp -o ush -ledit"**, the second is **"g++ -std=c++0x ush.cpp -o ush -ledit"**.
+Running **make** in the project root will compile the program on Linux. On BSD systems GNU make must be installed.
+To call GNU make instead of BSD make you use **gmake**.
 
 Running the shell is as simple as **"./ush"** (or whatever else you decide to name the executable upon compiling). You will
 be greeted by the ush command line immediately. Usage of the shell is relatively straightforward for anyone whose used bash.
