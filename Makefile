@@ -3,7 +3,6 @@ SRC=$(wildcard src/*.cpp)
 IDIR=include
 EXENAME=bin/ush
 LIBS=-ledit
-OUT=/bin
 
 
 default: $(SRC)
@@ -19,7 +18,7 @@ debug: $(SRC)
 	$(CXX) $(SRC) -o $(EXENAME) -std=c++11 -Wall -I$(IDIR) $(LIBS) -g
 
 install: $(EXENAME)
-	cp $(EXENAME) $(OUT)
+	cp $(EXENAME) $(out)/bin
 
 clean:
 	rm $(EXENAME)
