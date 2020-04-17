@@ -18,6 +18,7 @@ debug: $(SRC)
 	$(CXX) $(SRC) -o $(EXENAME) -std=c++11 -Wall -I$(IDIR) $(LIBS) -g
 
 install: $(EXENAME)
+   mkdir $(out)/bin
 	cp $(EXENAME) $(out)/$(EXENAME)
 
 clean:
