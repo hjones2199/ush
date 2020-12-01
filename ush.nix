@@ -1,4 +1,4 @@
-with import <nixpkgs> {};
+{ stdenv, lib, meson, ninja, pkg-config, libedit }:
 
 stdenv.mkDerivation rec {
   pname = "ush";
