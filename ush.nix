@@ -2,7 +2,7 @@ with import <nixpkgs> {};
 
 stdenv.mkDerivation rec {
   pname = "ush";
-  version = "0.71";
+  version = "0.72";
 
   src = ./.;
 
