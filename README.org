@@ -1,3 +1,8 @@
+#+TITLE: README
+
+* ush
+[[https://builtwithnix.org][file:https://builtwithnix.org/badge.svg]]
+
 The C++ source file contained in this folder is for the ush command line shell for Unix.
 Ush is a lightweight command line shell utility for unix, the entire
 program is contained in a single source file. It acts as a minimalistic alternative
