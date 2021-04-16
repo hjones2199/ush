@@ -45,6 +45,11 @@ int main(int argc, char** argv) {
    * generated path to the executable with the args specified by the user. Lastly, the shell
    * forks off a process which runs the program with the specified args.
    */
+
+  if(argc > 1) {
+    cerr << "Usage: " << argv[0] << endl;
+    return EXIT_FAILURE;
+  }
   while(1) { //Main loop begin
     //Initializer Area
     string current{}; //holds the string just recieved from user input
