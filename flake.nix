@@ -28,7 +28,7 @@
               homepage = "https://qirus.net";
               maintainers = with maintainers; [ hjones2199 ];
               license = licenses.bsd3;
-              platforms = platforms.linux;
+              platforms = platforms.unix;
             };
           };
       }
